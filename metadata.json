@@ -1,0 +1,7 @@
+{
+  "name": "LTS - Re-Fueling by YAYA",
+  "description": "A professional fueling request and management system for construction and logistics projects. Features include multi-role workflows (User, PM, Admin), mileage verification, and automated reporting.",
+  "requestFramePermissions": [
+    "camera"
+  ]
+}
