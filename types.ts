@@ -7,11 +7,13 @@ export enum UserRole {
 
 export enum RequestStatus {
   PENDING = 'PENDING',
+  PENDING_EDIT = 'PENDING_EDIT', // Sent back to driver
   PM_APPROVED = 'PM_APPROVED',
   REJECTED = 'REJECTED',
-  ADMIN_PROCESSED = 'ADMIN_PROCESSED', // Admin sent reply, waiting for user to fuel
-  VERIFICATION_SUBMITTED = 'VERIFICATION_SUBMITTED', // User uploaded photos, waiting for admin review
-  COMPLETED = 'COMPLETED' // Admin approved final photos
+  ADMIN_PROCESSED = 'ADMIN_PROCESSED', 
+  VERIFICATION_SUBMITTED = 'VERIFICATION_SUBMITTED', 
+  COMPLETED = 'COMPLETED',
+  FLAGGED = 'FLAGGED' // Abnormal usage detected
 }
 
 export interface FuelRequest {
@@ -20,26 +22,41 @@ export interface FuelRequest {
   userName: string;
   date: string;
   plateNumber: string;
+  vehicleModel?: string;
+  fuelType?: string;
   projectName: string;
-  region: string;
+  region?: string;
   lastMileage: number;
   newMileage: number;
   lastRequestLiters: number;
   newRequestLiters: number;
   stationName: string;
-  imageUrl?: string; // Initial mileage photo (BEFORE)
-  postFuelingImages?: string[]; // Verification photos (AFTER: receipt, final mileage)
+  imageUrl?: string; 
+  postFuelingImages?: string[]; 
   status: RequestStatus;
   createdAt: number;
   updatedAt: number;
   pmNote?: string;
-  pmSuggestedLiters?: number;
   pmReplyImage?: string; 
   adminNote?: string;
   adminReplyData?: string;
   adminReplyImage?: string; 
   chatMessages?: ChatMessage[]; 
-  chatDisabled?: boolean; 
+  chatDisabled?: boolean;
+  isAbnormal?: boolean;
+  location?: { lat: number; lng: number };
+}
+
+export interface AuditLog {
+  id: string;
+  requestId: string;
+  plateNumber: string;
+  actorName: string;
+  actorRole: UserRole;
+  action: string; 
+  comment: string;
+  timestamp: number;
+  details?: any;
 }
 
 export interface Notification {
@@ -61,7 +78,6 @@ export interface AppUser {
   role: UserRole;
   email: string;
   blocked?: boolean;
-  muted?: boolean; 
 }
 
 export interface ChatMessage {
